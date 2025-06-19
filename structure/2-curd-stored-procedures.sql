@@ -191,6 +191,17 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE DeleteTaskAssignation
+    @taskId INT,
+    @userId INT,
+    @dateTime DATETIME
+AS
+BEGIN
+    DELETE FROM TasksAssignations
+    WHERE taskId = @taskId AND userId = @userId AND dateTime = @dateTime;
+END;
+GO
+
 CREATE PROCEDURE UpdateTaskAssignation
     @taskId INT,
     @userId INT,
@@ -206,22 +217,11 @@ BEGIN
         @dateTime;
 
     EXEC CreateTaskAssignation
-        @newTaskId
+        @newTaskId,
         @newUserId,
         @newDateTime;
 
     -- Puede que sea mala idea hacer esto pero en mi corazón me dice que es lo correcto
-END;
-GO
-
-CREATE PROCEDURE DeleteTaskAssignation
-    @taskId INT,
-    @userId INT,
-    @dateTime DATETIME
-AS
-BEGIN
-    DELETE FROM TasksAssignations
-    WHERE taskId = @taskId AND userId = @userId AND dateTime = @dateTime;
 END;
 GO
 
