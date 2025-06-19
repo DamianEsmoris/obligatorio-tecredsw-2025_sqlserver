@@ -1,0 +1,35 @@
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: P4ssw0rd!
+      TZ: America/Montevideo
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $${SA_PASSWORD} -C -Q 'SELECT 1' || exit"
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+
+  mssql.configurator:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      mssql:
+        condition: service_healthy
+    environment:
+      SA_PASSWORD: P4ssw0rd!
+    volumes:
+      - ./structure:/db/structure
+    command: |
+      bash -c '
+      for f in /db/structure/*.sql; do 
+      /opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P $${SA_PASSWORD} -C -i $${f} \
+        || exit && echo "File ($${f}) loaded";
+      done
+      '
