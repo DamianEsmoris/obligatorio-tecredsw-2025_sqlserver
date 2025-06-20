@@ -165,7 +165,7 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE GetAllTaskAssignation
+CREATE PROCEDURE GetAllTasksAssignations
 AS
 BEGIN
     SELECT
@@ -296,7 +296,7 @@ GO
 
 --- Extras ---
 
-CREATE PROCEDURE GetTasksAssignedTo
+CREATE PROCEDURE GetAllTasksAssignedTo
     @userId INT
 AS
 BEGIN
