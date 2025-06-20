@@ -26,10 +26,20 @@ services:
       SA_PASSWORD: P4ssw0rd!
     volumes:
       - ./structure:/db/structure
+      - ./dataset:/db/dataset
     command: |
       bash -c '
       for f in /db/structure/*.sql; do 
-      /opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P $${SA_PASSWORD} -C -i $${f} \
-        || exit && echo "File ($${f}) loaded";
+        echo "Loding $${f}: "
+        /opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P $${SA_PASSWORD} -b -C -i $${f} \
+          || exit && echo "OK";
+      done
+
+      echo "---"
+
+      for f in /db/dataset/*.sql; do 
+        echo "Loding $${f}: "
+        /opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P $${SA_PASSWORD} -b -C -i $${f} \
+          || exit && echo "OK";
       done
       '
