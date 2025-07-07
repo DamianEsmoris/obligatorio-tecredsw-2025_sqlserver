@@ -15,7 +15,7 @@ BEGIN
         WHERE i.userId <> a.userId
     )
     BEGIN
-        RAISERROR('A task cannot be assigned to different users at the same date time.', 16, 1);
+        RAISERROR('A task cannot be assigned to different users at the same date and time', 16, 1);
         RETURN;
     END
 
