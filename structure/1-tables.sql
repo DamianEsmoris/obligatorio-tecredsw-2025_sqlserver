@@ -31,10 +31,8 @@ CREATE TABLE TasksAssignations(
 CREATE TABLE TasksHistory(
     taskId INT,
     userId INT,
-    dateTime DATETIME DEFAULT GETDATE(),
+    dateTime DATETIME2(7) DEFAULT SYSDATETIME(),
     action CHAR(1) NOT NULL,
-    CONSTRAINT PK_TasksHistory PRIMARY KEY (taskId, userId, dateTime),
-    CONSTRAINT FK_TasksHistory_Users FOREIGN KEY (userId) REFERENCES Users (id),
-    CONSTRAINT FK_TasksHistory_Tasks FOREIGN KEY (taskId) REFERENCES Tasks (id),
+    CONSTRAINT PK_TasksHistory PRIMARY KEY (taskId, userId, dateTime, action),
     CONSTRAINT CHK_TasksHistory_action CHECK (action IN ('C', 'D', 'U'))
 );

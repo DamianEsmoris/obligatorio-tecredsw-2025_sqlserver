@@ -3,34 +3,35 @@ GO
 
 ---
 
-CREATE TRIGGER InsertTaskAssignationOnHistory
-ON TasksAssignations
+CREATE TRIGGER TaskModificationTrigger
+ON Tasks
 AFTER INSERT, UPDATE, DELETE
 AS
 BEGIN
-    DECLARE @taskId INT;
-    DECLARE @userId INT;
+    DECLARE @userId INT = @@SPID;
     DECLARE @action CHAR(1);
-    DECLARE @dateTime DATETIME;
 
-    IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+    IF EXISTS (SELECT * FROM inserted)
     BEGIN
-        SET @action = 'U';
-    END
-    ELSE IF EXISTS (SELECT * FROM inserted)
-    BEGIN
-        SET @action = 'C';
+        IF EXISTS (SELECT * FROM deleted)
+        BEGIN
+            SET @action = 'U';
+        END
+        ELSE
+        BEGIN 
+            SET @action = 'C';
+        END
+
+        INSERT INTO TasksHistory (taskId, userId, action)
+            SELECT id, @userId, @action AS action
+            FROM inserted;
     END
     ELSE 
     BEGIN
         SET @action = 'D';
+        INSERT INTO TasksHistory (taskId, userId, action)
+            SELECT id, @userId, @action AS action
+            FROM deleted;
     END
-
-    INSERT INTO TasksHistory (taskId, userId, action)
-        SELECT taskId, userId, @action AS action
-        FROM deleted
-        UNION ALL
-        SELECT taskId, userId, @action AS action
-        FROM inserted;
 END;
 GO
