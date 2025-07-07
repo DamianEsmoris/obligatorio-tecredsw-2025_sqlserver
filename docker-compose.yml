@@ -30,7 +30,7 @@ services:
     command: |
       bash -c '
       for f in /db/structure/*.sql; do 
-        echo "Loding $${f}: "
+        echo "Loading $${f}: "
         /opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P $${SA_PASSWORD} -b -C -i $${f} \
           || exit && echo "OK";
       done
@@ -38,7 +38,7 @@ services:
       echo "---"
 
       for f in /db/dataset/*.sql; do 
-        echo "Loding $${f}: "
+        echo "Loading $${f}: "
         /opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P $${SA_PASSWORD} -b -C -i $${f} \
           || exit && echo "OK";
       done
