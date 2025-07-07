@@ -24,9 +24,6 @@ GetTaskAssignation
     '2025-06-19 15:00:00';
 GO
 
-GetTaskHistoryByTaskId 10;
-GO
-
 DeleteTaskAssignation
     10,
     3,
