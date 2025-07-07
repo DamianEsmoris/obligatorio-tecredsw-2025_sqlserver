@@ -14,7 +14,7 @@ CREATE TABLE Tasks(
     id INT IDENTITY (1,1) PRIMARY KEY,
     title VARCHAR(255) UNIQUE,
     description TEXT,
-    dateTime DATETIME,
+    dateTime DATETIME DEFAULT GETDATE(),
     status VARCHAR(128) DEFAULT NULL  
 );
 

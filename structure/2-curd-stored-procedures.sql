@@ -71,14 +71,13 @@ GO
 CREATE PROCEDURE CreateTask
     @title VARCHAR(255),
     @description TEXT,
-    @dateTime DATETIME,
     @status VARCHAR(128)
 AS
 BEGIN
     INSERT INTO Tasks
-        (title, description, dateTime, status)
+        (title, description, status)
     VALUES
-        (@title, @description, @dateTime, @status);
+        (@title, @description, @status);
 END;
 GO
 
@@ -128,14 +127,12 @@ CREATE PROCEDURE UpdateTask
     @id INT,
     @title VARCHAR(255),
     @description TEXT,
-    @dateTime DATETIME,
     @status VARCHAR(128)
 AS
 BEGIN
     UPDATE Tasks SET
         title = @title,
         description = @description,
-        dateTime = @dateTime,
         status = @status
     WHERE id = @id;
 END;
